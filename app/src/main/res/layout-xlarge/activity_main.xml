@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:columnCount="1"
-    android:rowCount="12"
+    android:rowCount="2"
     android:id="@+id/main_Layout_parent"
     tools:context="com.lukecaptaincode.planetsidepointtracker.MainActivity">
 
@@ -190,5 +190,4 @@
                 android:layout_column="0" />
         </GridLayout>
     </GridLayout>
-
 </GridLayout>
