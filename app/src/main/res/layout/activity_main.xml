@@ -190,5 +190,65 @@
                 android:layout_column="0" />
         </GridLayout>
     </GridLayout>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="103dp"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:columnCount="5"
+        android:rowCount="1"
+        android:id="@+id/main_Layout_Score"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/tr"
+            android:id="@+id/main_txt_TRScore"
+            android:layout_row="0"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_column="0" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/vs"
+            android:id="@+id/main_txt_VSScore"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/nc"
+            android:id="@+id/main_txt_NCScore"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:id="@+id/main_btn_StopTimers"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:id="@+id/main_btn_ClearScore"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+    </GridLayout>
 </GridLayout>
