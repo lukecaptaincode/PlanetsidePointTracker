@@ -3,4 +3,7 @@
     <string name="tr">TR</string>
     <string name="vs">VS</string>
     <string name="nc">NC</string>
+    <string name="neutral">Neutral</string>
+    <string name="stopTimers">Stop all timers</string>
+    <string name="clear_scores">Clear scores</string>
 </resources>
