@@ -14,6 +14,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     Button[] pointButtons;
     mainController mC;
-   // Timer[] timers;
     Boolean[] isTimerRunning;
-
+    public Timer [] timers;
+    TimerTask ApointTaskTR, ApointTaskVS;
     TextView trScoreTXT, vsScoreTXT, ncScoreTXT;
     int trScore, vsScore, ncScore, buttonID_A, buttonID_B, buttonID_C, buttonID_D, TimeCounter[], timeATfinish =60;
 
@@ -48,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
             TimeCounter[i] = 0;
         }
         isTimerRunning = new Boolean[pointButtons.length];
-        for (int i = 0; i > isTimerRunning.length; ++i) {
-            isTimerRunning[i] = new Boolean.valueOf(false);
+        Arrays.fill(isTimerRunning, Boolean.FALSE);
+        timers = new Timer[pointButtons.length];
+        for(int i = 0; i>timers.length;i++)
+        {
+            timers[i] = new Timer();
         }
 
         initTextView();
-
     }
 
     public void initButtons() {
@@ -68,15 +71,22 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < pointButtons.length; i++) {
             Log.i("Listener loop Buttons", "Listener add loop Buttons");
             pointButtons[i].setTag(i);
-            pointButtons[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("BUTTON LISTENER ADDED", "BUTTON LISTENER ADDED");
-                    startA_Timer(view);
-                }
-            });
-        }
 
+        }
+        pointButtons[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("BUTTON LISTENER ADDED", "BUTTON LISTENER ADDED");
+                startA_TimerTR(view);
+            }
+        });
+        pointButtons[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("BUTTON LISTENER ADDED", "BUTTON LISTENER ADDED");
+                startA_TimerVS(view);
+            }
+        });
 
     }
 
@@ -85,72 +95,86 @@ public class MainActivity extends AppCompatActivity {
         vsScoreTXT = (TextView) findViewById(R.id.main_txt_VSScore);
         ncScoreTXT = (TextView) findViewById(R.id.main_txt_NCScore);
     }
+    public  void ApointTR()
+    {
 
-    public void startA_Timer(final View view) {
-        final int id = ((Integer) view.getTag());
-        final Timer [] timers = new Timer[pointButtons.length];
-        isTimerRunning[id] = true;
-        timers[id] = new Timer();
-        switch(id){
-            case 0:
-                if(isTimerRunning[1] ==true) {
-                    timers[1].cancel();
-                }
-                if(isTimerRunning[2] ==true) {
-                    timers[2].cancel();
-                }
-
-                break;
-            case 1:
-                if(isTimerRunning[0] ==true) {
-                    timers[0].cancel();
-                }
-                if(isTimerRunning[2] ==true) {
-                    timers[2].cancel();
-                }
-                break;
-            case 2:
-                if(isTimerRunning[1] ==true) {
-                    timers[1].cancel();
-                }
-                if(isTimerRunning[0] ==true) {
-                    timers[0].cancel();
-                }
-                break;
-            case 3:
-                if(isTimerRunning[0] ==true) {
-                    timers[0].cancel();
-                }
-                if(isTimerRunning[1] ==true) {
-                    timers[1].cancel();
-                }
-                if(isTimerRunning[2] ==true) {
-                    timers[2].cancel();
-                }
-                break;
-
-        }
-        final TimerTask ApointTask = new TimerTask() {
+        runOnUiThread(new Runnable() {
+            @Override
             public void run() {
+                if(isTimerRunning[1] == true) {
+                    isTimerRunning[1] = false;
+                    timers[1].cancel();
+                    timers[1].purge();
+                }
 
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        if (TimeCounter[id] == timeATfinish) {
-                            addPoint_TR();
-                            timers[id].cancel();
-                            TimeCounter[id] =0;
-                            startA_Timer(view);
-                            return;
-                        }
-                        pointButtons[id].setText("" + String.valueOf(TimeCounter[id]));
-                        TimeCounter[id]++;
-                    }
-                });
+                if (TimeCounter[0] == timeATfinish) {
+                    addPoint_TR();
+                    timers[0].cancel();
+                    TimeCounter[0] =0;
+
+                    return;
+                }
+                pointButtons[0].setText("" + String.valueOf(TimeCounter[0]));
+                TimeCounter[0]++;
             }
-        };
-        timers[id].schedule(ApointTask,0,1000);
+        });
 
     }
+    public void ApointVS()
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(isTimerRunning[0] == true) {
+                    isTimerRunning[0] = false;
+                    timers[0].cancel();
+                    timers[0].purge();
+                }
+
+
+                if (TimeCounter[1] == timeATfinish) {
+                    addPoint_VS();
+                    timers[1].cancel();
+                    TimeCounter[1] =0;
+
+                    return;
+                }
+                pointButtons[1].setText("" + String.valueOf(TimeCounter[1]));
+                TimeCounter[1]++;
+            }
+        });
+
+
+    }
+
+    public void startA_TimerTR(View view) {
+
+        isTimerRunning[0] = true;
+        timers[0] = new Timer();
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                ApointTR();
+            }
+        };
+        timers[0].schedule(tt,0,1000);
+
+    }
+    public void startA_TimerVS(final View view) {
+        isTimerRunning[1] = true;
+        timers[1] = new Timer();
+        TimerTask tv = new TimerTask() {
+            @Override
+            public void run() {
+                ApointVS();
+            }
+        };
+     //   timers[0].cancel();
+        timers[1].schedule(tv,0,1000);
+
+    }
+
+
 
     public void addPoint_TR() {
         trScore = trScore + 1;
