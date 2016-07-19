@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
     mainController mC;
     Boolean[] isTimerRunning;
     public Timer[] timers;
+    mainModel MainModel;
     TextView trScoreTXT, vsScoreTXT, ncScoreTXT;
-    int trScore, vsScore, ncScore, buttonID_A, buttonID_B, buttonID_C, buttonID_D, TimeCounter[], timeATfinish = 60;
+    int trScore, vsScore, ncScore, TimeCounter[], timeATfinish = 60;
 
 
     @Override
@@ -39,10 +40,7 @@ public class MainActivity extends AppCompatActivity {
         trScore = 0;
         vsScore = 0;
         ncScore = 0;
-        buttonID_A = 0;
-        buttonID_B = 0;
-        buttonID_C = 0;
-        buttonID_D = 0;
+
         Log.i("CREATED", "CREATED");
         initButtons();
         TimeCounter = new int[12];
@@ -57,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         initTextView();
+        MainModel = new mainModel(pointButtons, trScoreTXT, vsScoreTXT, ncScoreTXT);
     }
 
     public void initButtons() {
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         clearScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clearScore();
+                MainModel.clearScore();
             }
         });
         for (int i =0; i< neutralButtons.length;i++)
@@ -95,19 +94,19 @@ public class MainActivity extends AppCompatActivity {
                public void onClick(View view) {
                    switch (o){
                        case 0:
-                           stop_TimersA(view);
+                           MainModel.stop_TimersA(view);
                            break;
                        case 1:
-                           stop_TimersB(view);
+                           MainModel.stop_TimersB(view);
                            break;
                        case 2:
-                           stop_TimersC(view);
+                           MainModel.stop_TimersC(view);
                            break;
                        case 3:
-                           stop_TimersD(view);
+                           MainModel.stop_TimersD(view);
                            break;
                        case 4:
-                           stopAllTimers(view);
+                           MainModel.stopAllTimers(view);
                            break;
                    }
                }
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("BUTTON LISTENER ADDED", "BUTTON LISTENER ADDED");
                     int tag = (Integer) pointButtons[o].getTag();
 
-                    startPoint(tag, view);
+                    MainModel.startPoint(tag, view);
                 }
             });
 
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         vsScoreTXT = (TextView) findViewById(R.id.main_txt_VSScore);
         ncScoreTXT = (TextView) findViewById(R.id.main_txt_NCScore);
     }
-
+/*
     public void stopAllTimers(View view) {
         stop_TimersA(view);
         stop_TimersB(view);
@@ -522,4 +521,5 @@ public class MainActivity extends AppCompatActivity {
         ncScoreTXT.setText("NC " + Integer.toString(ncScore));
     }
 
+*/
 }

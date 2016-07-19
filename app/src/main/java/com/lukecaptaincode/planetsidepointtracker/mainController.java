@@ -11,7 +11,7 @@ public class mainController {
     mainModel mM;
     public mainController()
     {
-        mM = new mainModel();
+        ///mM = new mainModel();
     }
     public void startA_TRTimer()
     {
