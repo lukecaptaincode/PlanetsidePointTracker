@@ -1,19 +1,27 @@
 package com.lukecaptaincode.planetsidepointtracker;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.Arrays;
 import java.util.Timer;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
     Button[] pointButtons, neutralButtons;
     Button clearScores;
+    FloatingActionMenu aM;
     mainController mC;
     Boolean[] isTimerRunning;
     public Timer[] timers;
@@ -49,6 +57,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initButtons() {
+        //Floating radial menu
+        ImageView iconSettings = new ImageView(this); // Create an icon
+        iconSettings.setImageDrawable(getResources().getDrawable(R.drawable.settings_ic));
+
+        FloatingActionButton settingsButton = (FloatingActionButton) findViewById(R.id.main_float_Menu);
+
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+
+        ImageView iconTimers = new ImageView(this);
+        ImageView iconScores = new ImageView(this);
+        iconTimers.setImageDrawable(getResources().getDrawable(R.drawable.timeroff_ic));
+        iconScores.setImageDrawable(getResources().getDrawable(R.drawable.score_ic));
+
+        SubActionButton timersSub = itemBuilder.setContentView(iconTimers).build();
+        SubActionButton scoreSub = itemBuilder.setContentView(iconScores).build();
+
+       aM = new FloatingActionMenu.Builder(this)
+                .addSubActionView(timersSub)
+                .addSubActionView(scoreSub)
+                .attachTo(settingsButton)
+                .build();
+
         pointButtons = new Button[12];
         pointButtons[0] = (Button) findViewById(R.id.main_btn_ApointTR);
         pointButtons[1] = (Button) findViewById(R.id.main_btn_ApointVS);
@@ -62,19 +92,14 @@ public class MainActivity extends AppCompatActivity {
         pointButtons[9] = (Button) findViewById(R.id.main_btn_DpointTR);
         pointButtons[10] = (Button) findViewById(R.id.main_btn_DpointVS);
         pointButtons[11] = (Button) findViewById(R.id.main_btn_DpointNC);
-        neutralButtons = new Button[5];
+        neutralButtons = new Button[4];
         neutralButtons[0] = (Button) findViewById(R.id.main_btn_ApointCLEAR);
         neutralButtons[1] = (Button) findViewById(R.id.main_btn_BpointCLEAR);
         neutralButtons[2] = (Button) findViewById(R.id.main_btn_CpointCLEAR);
         neutralButtons[3] = (Button) findViewById(R.id.main_btn_DpointCLEAR);
-        neutralButtons[4] = (Button) findViewById(R.id.main_btn_StopTimers);
-        clearScores = (Button) findViewById(R.id.main_btn_ClearScore);
-        clearScores.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainModel.clearScore();
-            }
-        });
+     //   neutralButtons[4] = (Button) findViewById(R.id.main_btn_StopTimers);
+      //  clearScores = (Button) findViewById(R.id.main_btn_ClearScore);
+
         for (int i =0; i< neutralButtons.length;i++)
         {final int o = i;
 
@@ -95,13 +120,47 @@ public class MainActivity extends AppCompatActivity {
                        case 3:
                            MainModel.stop_TimersD(view);
                            break;
-                       case 4:
-                           MainModel.stopAllTimers(view);
-                           break;
+                    //   case 4:
+                        //   MainModel.stopAllTimers(view);
+                         //  break;
                    }
                }
            });
         }
+        timersSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainModel.stopAllTimers(view);
+            }
+        });
+        scoreSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context c = getApplicationContext();
+                final DialogInterface.OnClickListener clearScoreYesNo = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                vsScore = 0;
+                                ncScore = 0;
+                                trScore = 0;
+                                vsScoreTXT.setText("VS");
+                                ncScoreTXT.setText("NC");
+                                trScoreTXT.setText("TR");
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(c);
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", clearScoreYesNo)
+                        .setNegativeButton("No", clearScoreYesNo).show();
+            }
+        });
         Log.i("BUTTONS INT", "BUTTONS INIT");
 
         for (int i = 0; i < pointButtons.length; i++) {
@@ -121,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 
     public void initTextView() {
         trScoreTXT = (TextView) findViewById(R.id.main_txt_TRScore);

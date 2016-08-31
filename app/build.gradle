@@ -10,6 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -18,10 +19,23 @@ android {
         }
     }
 }
+ext {
+    supportLibVersion = '24.2.0'  // variable that can be referenced to keep support libs consistent
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.4.0'
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    compile "com.android.support:percent:${supportLibVersion}"
+    compile "com.android.support:support-vector-drawable:${supportLibVersion}" // VectorDrawableCompat
+    compile "com.android.support:animated-vector-drawable:${supportLibVersion}" // AnimatedVectorDrawableCompat
+    compile "com.android.support:transition:${supportLibVersion}"
+    compile "com.android.support:support-annotations:${supportLibVersion}"
+
 }
